@@ -16,8 +16,9 @@ timeline.push({
     <h2>About this experiment</h2>
 
     <p>
-      This experiment was designed by Ali Çağan Kaya
-      for the Ethics and Experimental Design (SL9AE085) course
+      This is an experiment designed by Ali Çağan Kaya
+      as a part of the coursework for 
+      Ethics and Experimental Design (SL9AE085)
       at Université Paris Cité.
     </p>
 
@@ -46,10 +47,68 @@ timeline.push({
       and identify which of the eight Turkish
       vowels they perceive.
     </p>
+    
   `,
 
   choices: ['Continue']
 });
+
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+
+  stimulus: `
+    <h2>Experimental Design</h2>
+
+    <p>
+      <strong>Research question:</strong>
+      How does the availability of different temporal portions
+      of a vowel affect its perception in Turkish?
+    </p>
+
+    <p>
+      <strong>Design and participants:</strong>
+      This is a within-participant identification task
+      intended for native Turkish speakers. The design consists of
+      24 experimental trials (8 vowels × 3 conditions)
+      as well as 3 practice trials.
+    </p>
+
+    <p>
+      <strong>Variables:</strong>
+      The independent variable is the acoustic conditions.
+      The dependent variables are identification <strong>accuracy</strong>
+      and <strong>response time</strong>. External variables include
+      background noise, listening equipment,
+      individual differences, etc.
+    </p>
+
+    <p>
+      <strong>Controls:</strong>
+      All stimuli are derived from the same synthetic
+      vowels, and their presentation order is
+      <strong>randomised</strong>. In addition,
+      the audio playing time is subtracted from the RT.
+    </p>
+
+    <p>
+      <strong>Limitations and future work:</strong>
+      Since the stimuli are synthetic, further testing with
+      native speakers and more controlled listening
+      environments could be beneficial.
+    </p>
+    
+        <p>
+      <strong>This is a mock experiment, 
+      no data is collected on the server.
+      At the end of the experiment, you may
+      download your data as a CSV file.</strong>
+    </p>
+  `,
+
+  choices: ['Continue']
+});
+
 
 
 timeline.push({
@@ -137,9 +196,10 @@ timeline.push({
     <h2>Instructions</h2>
     <p>You will hear one Turkish vowel at a time.</p>
     <p>Select the letter you hear: a, e, ı, i, o, ö, u, or ü.</p>
+    <p>Turkish has one-to-one vowel correspondence. :)</p>
     <p>You can click a button or press a number from 1 to 8.</p>
     <p>Press Space to replay a sound.</p>
-    <p>First, try three practice trials.</p>
+    <p>First, please try three practice trials.</p>
   `,
   choices: ['Begin practice']
 });
@@ -164,7 +224,7 @@ function makeTrial(item, phase, number, total) {
       <p>${phase === 'practice' ? 'Practice' : 'Main experiment'}:
          ${number} / ${total}</p>
       <h3>Ready to listen?</h3>
-      <p>Click the button or press Space.</p>
+      <p>Click the button or press <strong>Space bar</strong>.</p>
     `,
 
     choices: ['Play sound'],
