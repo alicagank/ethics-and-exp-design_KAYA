@@ -144,17 +144,76 @@ timeline.push({
   choices: ['Begin practice']
 });
 
+
+
 // Trial
 function makeTrial(item, phase, number, total) {
   let replayCount = 0;
   let responseMethod = 'mouse';
   let keyHandler;
+  let startKey;
   let player;
+  let replayStart = null;
+  let replayTime = 0;
 
-  return {
+  // Start with button or Space
+  const startSound = {
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus: `
+      <p>${phase === 'practice' ? 'Practice' : 'Main experiment'}:
+         ${number} / ${total}</p>
+      <h3>Ready to listen?</h3>
+      <p>Click the button or press Space.</p>
+    `,
+
+    choices: ['Play sound'],
+
+    on_load: function() {
+      startKey = event => {
+        if (event.code === 'Space' && !event.repeat) {
+          event.preventDefault();
+
+          document.querySelector(
+            '#jspsych-html-button-response-btngroup [data-choice="0"]'
+          ).click();
+        }
+      };
+
+      window.addEventListener('keydown', startKey);
+    },
+
+    on_finish: function() {
+      window.removeEventListener('keydown', startKey);
+    }
+  };
+
+  // Play the sound before starting the timer
+  const listen = {
     type: jsPsychAudioButtonResponse,
 
     stimulus: item.file,
+    choices: [],
+    button_layout: 'flex',
+
+    prompt: '<h3>Listen carefully...</h3>',
+
+    // This does not let the participant to misclick or early click
+    response_allowed_while_playing: false,
+    trial_ends_after_audio: true
+  };
+
+  // Response timer starts after the audio
+  const identification = {
+    type: jsPsychHtmlButtonResponse,
+
+    stimulus: `
+      <p>${phase === 'practice' ? 'Practice' : 'Main experiment'}:
+         ${number} / ${total}</p>
+      <h3>Which vowel did you hear?</h3>
+      <p>Number keys 1–8 correspond to the buttons below.</p>
+    `,
+
     choices: vowels,
 
     // Grid layout fro buttons
@@ -162,14 +221,7 @@ function makeTrial(item, phase, number, total) {
     grid_columns: 4,
     grid_rows: 2,
 
-    // This does not let the participant to misclick or early click
-    response_allowed_while_playing: false,
-
     prompt: `
-      <p>${phase === 'practice' ? 'Practice' : 'Main experiment'}:
-         ${number} / ${total}</p>
-      <h3>Which vowel did you hear?</h3>
-      <p>Number keys 1–8 correspond to the buttons above.</p>
       <button id="replay-button" type="button">
         Replay sound (Space)
       </button>
@@ -188,12 +240,37 @@ function makeTrial(item, phase, number, total) {
       // Reply function
       player = new Audio(item.file);
 
+      const buttons = document.querySelectorAll(
+        '#jspsych-html-button-response-btngroup [data-choice]'
+      );
+
       const replay = () => {
-        player.pause();
+        if (replayStart !== null) return;
+
+        replayStart = performance.now();
+
+        buttons.forEach(button => button.disabled = true);
+
         player.currentTime = 0;
-        player.play().catch(err => console.error('Replay failed:', err));
-        replayCount++;
+        player.play().then(() => {
+          //Replay count ++
+          replayCount++;
+        }).catch(err => {
+          console.error('Replay failed:', err);
+          replayStart = null;
+          buttons.forEach(button => button.disabled = false);
+        });
       };
+
+      // Record replay time, replay time should not be included in the rt
+      player.addEventListener('ended', () => {
+        if (replayStart !== null) {
+          replayTime += performance.now() - replayStart;
+          replayStart = null;
+        }
+
+        buttons.forEach(button => button.disabled = false);
+      });
 
       document.getElementById('replay-button')
         .addEventListener('click', replay);
@@ -214,7 +291,7 @@ function makeTrial(item, phase, number, total) {
           const index = Number(event.key) - 1;
 
           const button = document.querySelector(
-            `#jspsych-audio-button-response-btngroup [data-choice="${index}"]`
+            `#jspsych-html-button-response-btngroup [data-choice="${index}"]`
           );
 
           // Ignore key presses before trial time begins, bugs
@@ -244,7 +321,21 @@ function makeTrial(item, phase, number, total) {
       // Reply count, method (shortcut, normal)
       data.replay_count = replayCount;
       data.response_method = responseMethod;
-    }
+
+      // RT without the time spent replaying
+      data.replay_time_ms = Math.round(replayTime);
+      data.rt_decision = Math.max(
+        0,
+        Math.round(data.rt - replayTime)
+      );
+    },
+// The white square could be something else
+    post_trial_gap: 250
+  };
+
+  // Play, listen, respond
+  return {
+    timeline: [startSound, listen, identification]
   };
 }
 
@@ -279,7 +370,7 @@ mainTrials.forEach((item, i) => {
   timeline.push(makeTrial(item, 'main', i + 1, mainTrials.length));
 });
 
-// Final screen, data export
+// Final screen, and data CSV export
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
