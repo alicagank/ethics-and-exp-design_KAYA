@@ -1,11 +1,13 @@
 
 /* Styling */
 
-body {
+body,
+.jspsych-display-element {
   background: #e5e8eb;
   color: #263746;
-  font-family: Arial, sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
+
 
 .jspsych-content {
   max-width: 650px;
@@ -14,6 +16,17 @@ body {
   padding: 30px;
   box-shadow: 3px 3px 0 #c3cbd2;
 }
+
+
+.stimulus-image {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  margin: 10px auto 20px;
+  border: 1px solid #ccc;
+}
+
 
 h2, h3 {
   color: #284d6a;

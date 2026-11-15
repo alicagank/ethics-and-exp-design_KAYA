@@ -8,6 +8,82 @@ const vowels = ['a', 'e', 'ı', 'i', 'o', 'ö', 'u', 'ü'];
 const conditions = ['intact', 'silent_centre', 'centre_only'];
 const timeline = [];
 
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+
+  stimulus: `
+    <h2>About this experiment</h2>
+
+    <p>
+      This experiment was designed by Ali Çağan Kaya
+      for the Ethics and Experimental Design (SL9AE085) course
+      at Université Paris Cité.
+    </p>
+
+    <p>
+      The aim of this experiment is to adapt the
+      vowel identification paradigm proposed by
+      Jenkins, Strange, and Edman (1983) to Turkish
+      in order to better understand the role of dynamic
+      acoustic information in vowel perception in the language.
+    </p>
+
+    <p>
+      The experiment uses three conditions:
+      <strong>intact vowels</strong>, in which the
+      entire signal is preserved;
+      <strong>silent-centre vowels</strong>, in which
+      the central 50% is replaced with silence; and
+      <strong>centre-only vowels</strong>, in which
+      only the central 50% is preserved.
+    </p>
+
+    <p>
+      The stimuli were synthesised using Praat
+      through the Parselmouth Python library.
+      Participants will listen to the stimuli
+      and identify which of the eight Turkish
+      vowels they perceive.
+    </p>
+  `,
+
+  choices: ['Continue']
+});
+
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+
+  stimulus: `
+    <h2>Stimulus Conditions</h2>
+
+    <p>
+      The experiment uses three versions of each vowel:
+    </p>
+
+    <h3>1. Normal (Intact)</h3>
+    <img src="images/normal.png"
+         alt="Normal vowel waveform"
+         class="stimulus-image">
+
+    <h3>2. Silent-centre</h3>
+    <img src="images/silent-centre.png"
+         alt="Silent-centre vowel waveform"
+         class="stimulus-image">
+
+    <h3>3. Centre-only</h3>
+    <img src="images/centre-only.png"
+         alt="Centre-only vowel waveform"
+         class="stimulus-image">
+
+  `,
+
+  choices: ['Continue']
+});
+
+
+
 let participantCode = '';
 
 // One stimulus per condition
