@@ -51,7 +51,7 @@ for (const item of vowels) {
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: '<h2>Finished!</h2><p>Download your responses as a CSV file.</p>',
-  choices: ['Download CSV'],
+  choices: ['Download CSV!'],
   on_finish: () => {
     jsPsych.data.get().filter({ task: 'identification' })
       .localSave('csv', 'stage-1-vowel-results.csv');
