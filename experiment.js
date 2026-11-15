@@ -41,11 +41,13 @@ timeline.push({
     </p>
 
     <p>
-      The stimuli were synthesised using Praat
-      through the Parselmouth Python library.
-      Participants will listen to the stimuli
-      and identify which of the eight Turkish
-      vowels they perceive.
+        The stimuli were synthesised using Praat
+         through the Parselmouth Python library,
+         loosely guided by the static formant measurements
+         reported in previous studies.
+         Participants will listen to the stimuli
+        and identify which of the eight Turkish
+        vowels they hear.
     </p>
     
   `,
@@ -88,7 +90,8 @@ timeline.push({
       All stimuli are derived from the same synthetic
       vowels, and their presentation order is
       <strong>randomised</strong>. In addition,
-      the audio playing time is subtracted from the RT.
+      the audio playing time is subtracted from the RT. (This was particularly
+      hard to figure out.)
     </p>
 
     <p>
