@@ -1,0 +1,6 @@
+/* Styling */
+body { background: #eeeeee; font-family: Arial, sans-serif; color: #222; }
+h2 { color: #b52222; }
+.jspsych-content { padding: 24px; }
+.jspsych-btn { font-size: 19px; padding: 9px 24px; border-radius: 2px; }
+.done { max-width: 550px; margin: 12vh auto; text-align: center; }
